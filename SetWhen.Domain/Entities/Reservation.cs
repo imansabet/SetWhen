@@ -11,6 +11,10 @@ public class Reservation
     public DateTime StartTime { get; private set; }
     public ReservationStatus Status { get; private set; }
 
+
+    public Service? Service { get; private set; }
+    public User? Staff { get; private set; }
+
     private Reservation() { }
 
     public Reservation(Guid customerId, Guid serviceId, Guid staffId, DateTime startTime)
