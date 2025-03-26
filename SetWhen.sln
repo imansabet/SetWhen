@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Application.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Infrastructure.Tests", "SetWhen.Infrastructure.Tests\SetWhen.Infrastructure.Tests.csproj", "{3496C261-D9A0-4746-AE6F-B12C6DA0B55E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Api.Tests", "SetWhen.Api.Tests\SetWhen.Api.Tests.csproj", "{67FCC935-0593-4C43-B0A0-048E4D5A054E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{3496C261-D9A0-4746-AE6F-B12C6DA0B55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3496C261-D9A0-4746-AE6F-B12C6DA0B55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3496C261-D9A0-4746-AE6F-B12C6DA0B55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67FCC935-0593-4C43-B0A0-048E4D5A054E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67FCC935-0593-4C43-B0A0-048E4D5A054E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67FCC935-0593-4C43-B0A0-048E4D5A054E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67FCC935-0593-4C43-B0A0-048E4D5A054E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
