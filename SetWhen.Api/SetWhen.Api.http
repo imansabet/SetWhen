@@ -1,0 +1,6 @@
+@SetWhen.Api_HostAddress = http://localhost:5222
+
+GET {{SetWhen.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
