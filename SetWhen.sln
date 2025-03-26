@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Api", "SetWhen.Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Domain.Tests", "SetWhen.Domain.Tests\SetWhen.Domain.Tests.csproj", "{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Application.Tests", "SetWhen.Application.Tests\SetWhen.Application.Tests.csproj", "{51190FE7-AAC0-4A21-88CF-F595EAAA483A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51190FE7-AAC0-4A21-88CF-F595EAAA483A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51190FE7-AAC0-4A21-88CF-F595EAAA483A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51190FE7-AAC0-4A21-88CF-F595EAAA483A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51190FE7-AAC0-4A21-88CF-F595EAAA483A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
