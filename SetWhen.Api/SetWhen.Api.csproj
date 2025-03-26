@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Carter" Version="9.0.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
 
 	  <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
 	  <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.11.0" />
@@ -20,7 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SetWhen.Application\SetWhen.Application.csproj" />
     <ProjectReference Include="..\SetWhen.Infrastructure\SetWhen.Infrastructure.csproj" />
   </ItemGroup>
+
+ 
 
 </Project>

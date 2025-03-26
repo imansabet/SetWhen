@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SetWhen.Application.Features.Reservations.Commands;
 using SetWhen.Application.Interfaces;
 using SetWhen.Infrastructure.Persistence;
+using SetWhen.Infrastructure.Repositories;
 using SetWhen.Infrastructure.Services;
 using System;
 
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly));
