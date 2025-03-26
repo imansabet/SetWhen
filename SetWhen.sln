@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Application", "SetW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Infrastructure", "SetWhen.Infrastructure\SetWhen.Infrastructure.csproj", "{BEB65F5F-79BE-438E-A64E-54A5FF161649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Persistence", "SetWhen.Persistence\SetWhen.Persistence.csproj", "{3E95038A-C4C6-423A-84B5-4B7FBF647B52}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Api", "SetWhen.Api\SetWhen.Api.csproj", "{AB3606C0-6575-4842-BCEF-09D2E7717816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Domain.Tests", "SetWhen.Domain.Tests\SetWhen.Domain.Tests.csproj", "{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF}"
@@ -39,10 +37,6 @@ Global
 		{BEB65F5F-79BE-438E-A64E-54A5FF161649}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEB65F5F-79BE-438E-A64E-54A5FF161649}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEB65F5F-79BE-438E-A64E-54A5FF161649}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E95038A-C4C6-423A-84B5-4B7FBF647B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E95038A-C4C6-423A-84B5-4B7FBF647B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E95038A-C4C6-423A-84B5-4B7FBF647B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E95038A-C4C6-423A-84B5-4B7FBF647B52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB3606C0-6575-4842-BCEF-09D2E7717816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB3606C0-6575-4842-BCEF-09D2E7717816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB3606C0-6575-4842-BCEF-09D2E7717816}.Release|Any CPU.ActiveCfg = Release|Any CPU
