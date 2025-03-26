@@ -1,4 +1,6 @@
+using Carter;
 using Microsoft.EntityFrameworkCore;
+using SetWhen.Application.Features.Reservations.Commands;
 using SetWhen.Application.Interfaces;
 using SetWhen.Infrastructure.Persistence;
 using SetWhen.Infrastructure.Services;
@@ -12,8 +14,14 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly));
+builder.Services.AddCarter();
 
 
 var app = builder.Build();
@@ -23,6 +31,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.MapCarter();
 
 app.UseHttpsRedirection();
 
