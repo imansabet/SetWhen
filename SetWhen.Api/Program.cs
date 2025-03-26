@@ -26,6 +26,7 @@ builder.Services.AddCarter();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,6 +36,12 @@ app.MapCarter();
 
 app.UseHttpsRedirection();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbInitializer.Seed(dbContext); 
+}
 
 
 app.Run();
