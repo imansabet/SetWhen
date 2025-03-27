@@ -7,15 +7,15 @@ using SetWhen.Application.Interfaces;
 namespace SetWhen.Application.Features.Services.Handlers;
 public class GetAllServicesHandler : IRequestHandler<GetAllServicesQuery, List<ServiceDto>>
 {
-    private readonly IServiceRepository _repository;
+    private readonly IServiceQueryService _service;
 
-    public GetAllServicesHandler(IServiceRepository repository)
+    public GetAllServicesHandler(IServiceQueryService service)
     {
-        _repository = repository;
+        _service = service;
     }
 
     public async Task<List<ServiceDto>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
     {
-        return await _repository.GetAllServicesAsync();
+        return await _service.GetAllServicesAsync();
     }
 }

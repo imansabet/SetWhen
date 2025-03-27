@@ -16,7 +16,7 @@ public class CreateReservationHandler : IRequestHandler<CreateReservationCommand
 
     public async Task<Guid> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        var reservation = await _reservationService.CreateReservationAsync(
+        var reservationId = await _reservationService.CreateReservationAsync(
             request.CustomerId,
             request.ServiceId,
             request.StaffId,
@@ -25,6 +25,6 @@ public class CreateReservationHandler : IRequestHandler<CreateReservationCommand
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return reservation.Id;
+        return reservationId;
     }
 }

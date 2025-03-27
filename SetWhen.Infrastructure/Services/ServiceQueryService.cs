@@ -3,12 +3,12 @@ using SetWhen.Application.DTOs;
 using SetWhen.Application.Interfaces;
 using SetWhen.Infrastructure.Persistence;
 
-namespace SetWhen.Infrastructure.Repositories;
-public class ServiceRepository : IServiceRepository
+namespace SetWhen.Infrastructure.Services;
+public class ServiceQueryService : IServiceQueryService
 {
     private readonly AppDbContext _context;
 
-    public ServiceRepository(AppDbContext context)
+    public ServiceQueryService(AppDbContext context)
     {
         _context = context;
     }
@@ -16,7 +16,11 @@ public class ServiceRepository : IServiceRepository
     public async Task<List<ServiceDto>> GetAllServicesAsync()
     {
         return await _context.Services
-            .Select(s => new ServiceDto(s.Id, s.Title, s.Duration, s.Price))
-            .ToListAsync();
+            .Select(s => new ServiceDto(
+                s.Id,
+                s.Title,
+                s.Duration,
+                s.Price
+            )).ToListAsync();
     }
 }
