@@ -28,5 +28,10 @@ public class ServiceModule : CarterModule
             var result = await sender.Send(command);
             return Results.Ok(result);
         });
+        app.MapDelete("/api/services/{id:guid}", async (Guid id, ISender sender) =>
+        {
+            await sender.Send(new DeleteServiceCommand(id));
+            return Results.NoContent();
+        });
     }
 }

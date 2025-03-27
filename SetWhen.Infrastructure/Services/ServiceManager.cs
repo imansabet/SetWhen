@@ -38,4 +38,15 @@ public class ServiceManager : IServiceManager
 
         return new ServiceDto(service.Id, service.Title, service.Duration, service.Price);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var service = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
+
+        if (service is null)
+            throw new NotFoundException("Service not found");
+
+        _context.Services.Remove(service);
+        await _context.SaveChangesAsync();
+    }
 }
