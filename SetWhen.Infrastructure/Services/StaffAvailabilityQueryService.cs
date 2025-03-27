@@ -13,7 +13,10 @@ public class StaffAvailabilityQueryService : IStaffAvailabilityQueryService
         _context = context;
     }
 
-    public async Task<List<TimeRange>> GetAvailableSlotsAsync(Guid staffId, DateOnly date)
+    public async Task<List<TimeRange>> GetAvailableSlotsAsync(
+         Guid staffId,
+         DateOnly date,
+         TimeSpan? minimumDuration = null)
     {
         var dayOfWeek = date.DayOfWeek;
 
@@ -30,11 +33,11 @@ public class StaffAvailabilityQueryService : IStaffAvailabilityQueryService
             .ToListAsync();
 
         var reservedSlots = reservations
-        .Select(r => new TimeRange(
-            r.StartTime.TimeOfDay,
-             r.StartTime.Add(r.Service.Duration).TimeOfDay
+            .Select(r => new TimeRange(
+                r.StartTime.TimeOfDay,
+                r.StartTime.Add(r.Service.Duration).TimeOfDay
             ))
-        .ToList();
+            .ToList();
 
         var result = new List<TimeRange>();
 
@@ -42,6 +45,13 @@ public class StaffAvailabilityQueryService : IStaffAvailabilityQueryService
         {
             var free = slot.ExcludeMany(reservedSlots);
             result.AddRange(free);
+        }
+
+        if (minimumDuration.HasValue)
+        {
+            result = result
+                .Where(r => r.End - r.Start >= minimumDuration.Value)
+                .ToList();
         }
 
         return result;

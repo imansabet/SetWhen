@@ -3,5 +3,5 @@
 namespace SetWhen.Application.Interfaces;
 public interface IStaffAvailabilityQueryService
 {
-    Task<List<TimeRange>> GetAvailableSlotsAsync(Guid staffId, DateOnly date);
+    Task<List<TimeRange>> GetAvailableSlotsAsync(Guid staffId, DateOnly date, TimeSpan? minimumDuration = null);
 }
