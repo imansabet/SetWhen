@@ -19,5 +19,12 @@ public class ReservationModule : CarterModule
             var result = await sender.Send(new GetUserReservationsQuery(userId));
             return Results.Ok(result);
         });
+
+
+        app.MapPut("/api/reservations/{id:guid}/cancel", async (Guid id, ISender sender) =>
+        {
+            await sender.Send(new CancelReservationCommand(id));
+            return Results.NoContent();
+        });
     }
 }
