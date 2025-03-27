@@ -10,16 +10,16 @@ public class StaffAvailability
 {
     public Guid Id { get; private set; }
     public Guid StaffId { get; private set; }
-    public DayOfWeek Day { get; private set; }
+    public DayOfWeek DayOfWeek { get; private set; }
     public TimeRange TimeRange { get; private set; }
 
     private StaffAvailability() { }
 
-    public StaffAvailability(Guid staffId, DayOfWeek day, TimeRange range)
+    public StaffAvailability(Guid staffId, DayOfWeek dayOfWeek , TimeRange range)
     {
         Id = Guid.NewGuid();
         StaffId = staffId;
-        Day = day;
+        DayOfWeek = dayOfWeek;
         TimeRange = range;
     }
 }
