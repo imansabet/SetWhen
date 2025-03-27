@@ -26,5 +26,18 @@ public class ReservationModule : CarterModule
             await sender.Send(new CancelReservationCommand(id));
             return Results.NoContent();
         });
+
+
+        app.MapPut("/api/reservations/{id:guid}/confirm", async (Guid id, ISender sender) =>
+        {
+            await sender.Send(new ConfirmReservationCommand(id));
+            return Results.NoContent();
+        });
+
+        app.MapPut("/api/reservations/{id:guid}/complete", async (Guid id, ISender sender) =>
+        {
+            await sender.Send(new CompleteReservationCommand(id));
+            return Results.NoContent();
+        });
     }
 }

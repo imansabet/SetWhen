@@ -74,4 +74,21 @@ public class ReservationService : IReservationService
 
         await _context.SaveChangesAsync();
     }
+
+
+    public async Task ConfirmReservationAsync(Guid reservationId)
+    {
+        var reservation = await _context.Reservations.FindAsync(reservationId)
+            ?? throw new NotFoundException("Reservation not found");
+
+        reservation.Confirm();
+    }
+
+    public async Task CompleteReservationAsync(Guid reservationId)
+    {
+        var reservation = await _context.Reservations.FindAsync(reservationId)
+            ?? throw new NotFoundException("Reservation not found");
+
+        reservation.Complete();
+    }
 }
