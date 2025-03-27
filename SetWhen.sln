@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Infrastructure.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetWhen.Api.Tests", "SetWhen.Api.Tests\SetWhen.Api.Tests.csproj", "{67FCC935-0593-4C43-B0A0-048E4D5A054E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{04C70FBE-86E8-4A13-AC29-615B6BAA8C99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EA8FB4A3-4E2D-4ECA-B9A3-47B1FA164EBF} = {04C70FBE-86E8-4A13-AC29-615B6BAA8C99}
+		{51190FE7-AAC0-4A21-88CF-F595EAAA483A} = {04C70FBE-86E8-4A13-AC29-615B6BAA8C99}
+		{3496C261-D9A0-4746-AE6F-B12C6DA0B55E} = {04C70FBE-86E8-4A13-AC29-615B6BAA8C99}
+		{67FCC935-0593-4C43-B0A0-048E4D5A054E} = {04C70FBE-86E8-4A13-AC29-615B6BAA8C99}
 	EndGlobalSection
 EndGlobal

@@ -4,6 +4,7 @@ using SetWhen.Application.Features.Reservations.Commands;
 using SetWhen.Application.Interfaces;
 using SetWhen.Infrastructure.Persistence;
 using SetWhen.Infrastructure.Services;
+using StackExchange.Redis;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,11 @@ builder.Services.AddScoped<IServiceQueryService, ServiceQueryService>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly));
 builder.Services.AddCarter();
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect("localhost")); 
+
+builder.Services.AddScoped<IOTPStore, RedisOTPStore>();
 
 
 var app = builder.Build();
