@@ -4,5 +4,7 @@ public record ReservationDto(
   Guid Id,
   string ServiceTitle,
   string StaffName,
-  DateTime StartTime
+  DateTime StartTime,
+  string Status
+
 );
