@@ -20,7 +20,17 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
         modelBuilder.Entity<StaffAvailability>().OwnsOne(sa => sa.TimeRange);
 
+        modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.Service)
+            .WithMany()
+            .HasForeignKey(r => r.ServiceId);
+
+        modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.Staff)
+            .WithMany()
+            .HasForeignKey(r => r.StaffId);
     }
 }

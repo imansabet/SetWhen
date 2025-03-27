@@ -23,6 +23,7 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IReservationQueryService, ReservationQueryService>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IStaffAvailabilityService, StaffAvailabilityService>();
+builder.Services.AddScoped<IStaffAvailabilityQueryService, StaffAvailabilityQueryService>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly));
 builder.Services.AddCarter();
