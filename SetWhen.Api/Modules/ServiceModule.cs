@@ -19,5 +19,14 @@ public class ServiceModule : CarterModule
             var result = await sender.Send(command);
             return Results.Created($"/api/services/{result.Id}", result);
         });
+
+        app.MapPut("/api/services/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender sender) =>
+        {
+            if (id != command.Id)
+                return Results.BadRequest("ID in URL does not match ID in body");
+
+            var result = await sender.Send(command);
+            return Results.Ok(result);
+        });
     }
 }

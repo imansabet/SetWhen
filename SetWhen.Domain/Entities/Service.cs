@@ -15,4 +15,10 @@ public class Service
         Duration = duration;
         Price = price;
     }
+    public void Update(string title, TimeSpan duration, decimal price)
+    {
+        Title = title;
+        Duration = duration;
+        Price = price;
+    }
 }
