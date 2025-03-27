@@ -33,7 +33,7 @@ public class ReservationServiceTests
         await context.SaveChangesAsync();
 
         // Assert
-        var inDb = await context.Reservations.FirstOrDefaultAsync(x => x.Id == reservation.Id);
+        var inDb = await context.Reservations.FirstOrDefaultAsync(x => x.Id == reservation);
         inDb.Should().NotBeNull();
         inDb.CustomerId.Should().Be(customerId);
         inDb.ServiceId.Should().Be(serviceId);

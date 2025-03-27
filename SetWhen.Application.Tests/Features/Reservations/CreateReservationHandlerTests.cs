@@ -23,7 +23,7 @@ public class CreateReservationHandlerTests
         var reservationServiceMock = new Mock<IReservationService>();
         reservationServiceMock
             .Setup(s => s.CreateReservationAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<DateTime>()))
-            .ReturnsAsync(fakeReservation);
+            .ReturnsAsync(fakeReservation.Id);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
         unitOfWorkMock
