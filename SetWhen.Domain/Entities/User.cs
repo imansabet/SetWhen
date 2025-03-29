@@ -14,14 +14,17 @@ public class User
     public string PhoneNumber { get; private set; }
     public UserRole Role { get; private set; }
 
-    private User() { } 
+    protected User() { }
 
-    public User(string fullName, string email, string phoneNumber, UserRole role)
+    public static User Create(string fullName, string email, string phoneNumber, UserRole role)
     {
-        Id = Guid.NewGuid();
-        FullName = fullName;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        Role = role;
+        return new User
+        {
+            Id = Guid.NewGuid(),
+            FullName = fullName,
+            Email = email,
+            PhoneNumber = phoneNumber,
+            Role = role
+        };
     }
 }

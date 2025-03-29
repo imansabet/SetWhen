@@ -12,5 +12,11 @@ public class AuthModule : CarterModule
             await sender.Send(command);
             return Results.Ok(new { message = "OTP sent (check console)" });
         });
+
+        app.MapPost("/api/auth/verify", async (VerifyOtpCommand command, ISender sender) =>
+        {
+            var result = await sender.Send(command);
+            return Results.Ok(result);
+        });
     }
 }
