@@ -4,15 +4,21 @@ using SetWhen.Application.Features.Auth.Commands;
 using SetWhen.Application.Interfaces;
 
 namespace SetWhen.Application.Features.Auth.Handlers;
+
 public class VerifyOtpHandler : IRequestHandler<VerifyOtpCommand, AuthResultDto>
 {
     private readonly IOTPStore _otpStore;
     private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
-    public VerifyOtpHandler(IOTPStore otpStore, IUserService userService)
+    public VerifyOtpHandler(
+        IOTPStore otpStore,
+        IUserService userService,
+        ITokenService tokenService)
     {
         _otpStore = otpStore;
         _userService = userService;
+        _tokenService = tokenService;
     }
 
     public async Task<AuthResultDto> Handle(VerifyOtpCommand request, CancellationToken cancellationToken)
@@ -26,6 +32,8 @@ public class VerifyOtpHandler : IRequestHandler<VerifyOtpCommand, AuthResultDto>
 
         var user = await _userService.GetOrCreateAsync(request.Phone, cancellationToken);
 
-        return new AuthResultDto(user.Id, user.PhoneNumber, user.Role.ToString());
+        var token = _tokenService.GenerateToken(user.Id, user.Role.ToString());
+
+        return new AuthResultDto(user.Id, user.PhoneNumber, user.Role.ToString(), token);
     }
 }

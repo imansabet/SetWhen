@@ -1,19 +1,36 @@
 using Carter;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SetWhen.Application.Features.Reservations.Commands;
 using SetWhen.Application.Interfaces;
 using SetWhen.Infrastructure.Persistence;
 using SetWhen.Infrastructure.Services;
 using StackExchange.Redis;
 using System;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "supersecretkey123456"; 
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        };
+    });
 
 
 
@@ -26,6 +43,7 @@ builder.Services.AddScoped<IStaffAvailabilityQueryService, StaffAvailabilityQuer
 builder.Services.AddScoped<IServiceLookupService, ServiceLookupService>();
 builder.Services.AddScoped<IServiceQueryService, ServiceQueryService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 
@@ -49,6 +67,9 @@ if (app.Environment.IsDevelopment())
 app.MapCarter();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 using (var scope = app.Services.CreateScope())
