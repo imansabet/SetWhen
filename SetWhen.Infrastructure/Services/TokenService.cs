@@ -12,14 +12,14 @@ public class TokenService : ITokenService
 
     public TokenService(IConfiguration config)
     {
-        _key = config["Jwt:Key"] ?? "supersecretkey123456";
+        _key = config["Jwt:Key"] ?? "verylong_secure_secret_key_here_12345678!";
     }
 
     public string GenerateToken(Guid userId, string role)
     {
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim(ClaimTypes.Role, role)
         };
 
