@@ -30,8 +30,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         };
-    });
-
+    }); 
+builder.Services.AddAuthorization();
 
 
 builder.Services.AddScoped<IReservationService, ReservationService>();
