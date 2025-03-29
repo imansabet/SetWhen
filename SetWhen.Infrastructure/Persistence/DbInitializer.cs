@@ -8,8 +8,8 @@ public static class DbInitializer
         if (!context.Users.Any())
         {
             context.Users.AddRange(
-                new User("usertest", "user@example.com", "09120000001", UserRole.Customer),
-                new User("stafftest", "staff@example.com", "09120000002", UserRole.Staff)
+                 User.Create("usertest", "user@example.com", "09120000001", UserRole.Customer),
+                 User.Create("stafftest", "staff@example.com", "09120000002", UserRole.Staff)
             );
         }
 
