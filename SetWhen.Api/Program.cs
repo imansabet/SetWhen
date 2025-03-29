@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "supersecretkey123456"; 
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "verylong_secure_secret_key_here_12345678!"; 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -27,4 +27,10 @@ public class User
             Role = role
         };
     }
+
+    public void UpdateProfile(string fullName, string email)
+    {
+        FullName = fullName;
+        Email = email;
+    }
 }

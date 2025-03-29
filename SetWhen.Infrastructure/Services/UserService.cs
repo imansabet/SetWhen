@@ -27,4 +27,15 @@ public class UserService : IUserService
 
         return user;
     }
+
+
+    public async Task UpdateUserAsync(Guid userId, string fullName, string email, CancellationToken cancellationToken)
+    {
+        var user = await _context.Users.FindAsync([userId], cancellationToken);
+        if (user == null) throw new Exception("User not found");
+
+        user.UpdateProfile(fullName, email);
+
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

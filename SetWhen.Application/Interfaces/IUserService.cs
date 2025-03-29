@@ -9,4 +9,6 @@ namespace SetWhen.Application.Interfaces;
 public interface IUserService
 {
     Task<User> GetOrCreateAsync(string phoneNumber, CancellationToken cancellationToken);
+    Task UpdateUserAsync(Guid userId, string fullName, string email, CancellationToken cancellationToken);
+
 }
