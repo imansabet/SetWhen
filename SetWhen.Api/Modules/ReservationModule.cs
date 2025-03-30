@@ -18,7 +18,8 @@ public class ReservationModule : CarterModule
         {
             var reservationId = await sender.Send(command);
             return Results.Created($"/api/reservations/{reservationId}", new { reservationId });
-        });
+        })
+            .RequireAuthorization("CustomerOnly");
 
         //  Request with JWT Token
         //      |
