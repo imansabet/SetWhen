@@ -10,12 +10,10 @@ public class UserModule : CarterModule
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/users/me", async (HttpContext context, UpdateUserDto dto, ISender sender) =>
+       
+        app.MapPut("/api/users/profile", async (UpdateProfileCommand command, ISender sender) =>
         {
-            var userIdStr = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(userIdStr, out var userId)) return Results.Unauthorized();
-
-            await sender.Send(new UpdateUserProfileCommand(userId, dto));
+            await sender.Send(command);
             return Results.NoContent();
         })
         .RequireAuthorization();
