@@ -34,6 +34,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("StaffOnly", policy =>
+        policy.RequireRole("Staff"));
+
+    options.AddPolicy("CustomerOnly", policy =>
+        policy.RequireRole("Customer"));
+});
+
+
+
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IReservationQueryService, ReservationQueryService>();
