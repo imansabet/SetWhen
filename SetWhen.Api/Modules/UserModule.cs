@@ -2,6 +2,7 @@
 using MediatR;
 using SetWhen.Application.DTOs;
 using SetWhen.Application.Features.Users.Commands;
+using SetWhen.Application.Features.Users.Queries;
 using System.Security.Claims;
 
 namespace SetWhen.Api.Modules;
@@ -15,6 +16,14 @@ public class UserModule : CarterModule
         {
             await sender.Send(command);
             return Results.NoContent();
+        })
+        .RequireAuthorization();
+
+
+        app.MapGet("/api/users/profile", async (ISender sender) =>
+        {
+            var profile = await sender.Send(new GetProfileQuery());
+            return Results.Ok(profile);
         })
         .RequireAuthorization();
     }

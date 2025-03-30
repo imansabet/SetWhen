@@ -38,4 +38,11 @@ public class UserService : IUserService
 
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<User> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var user = await _context.Users.FindAsync([userId], cancellationToken);
+        if (user is null) throw new Exception("User not found");
+        return user;
+    }
 }

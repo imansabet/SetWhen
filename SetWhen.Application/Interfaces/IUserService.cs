@@ -10,5 +10,6 @@ public interface IUserService
 {
     Task<User> GetOrCreateAsync(string phoneNumber, CancellationToken cancellationToken);
     Task UpdateUserAsync(Guid userId, string fullName, string email, CancellationToken cancellationToken);
+    Task<User> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
 
 }
