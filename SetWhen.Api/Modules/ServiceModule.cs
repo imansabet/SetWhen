@@ -25,15 +25,18 @@ public class ServiceModule : CarterModule
         app.MapPut("/api/services/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender sender) =>
         {
             if (id != command.Id)
-                return Results.BadRequest("ID in URL does not match ID in body");
+                return Results.BadRequest("ID mismatch");
 
             var result = await sender.Send(command);
             return Results.Ok(result);
-        });
+        })
+        .RequireAuthorization("StaffOnly");
+
         app.MapDelete("/api/services/{id:guid}", async (Guid id, ISender sender) =>
         {
             await sender.Send(new DeleteServiceCommand(id));
             return Results.NoContent();
-        });
+        })
+         .RequireAuthorization("StaffOnly");
     }
 }
