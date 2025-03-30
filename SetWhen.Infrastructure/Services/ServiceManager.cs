@@ -15,14 +15,9 @@ public class ServiceManager : IServiceManager
         _context = context;
     }
 
-    public async Task<ServiceDto> CreateAsync(string title, TimeSpan duration, decimal price)
+    public async Task AddAsync(Service service, CancellationToken cancellationToken)
     {
-        var service = new Service(title, duration, price);
-
-        _context.Services.Add(service);
-        await _context.SaveChangesAsync();
-
-        return new ServiceDto(service.Id, service.Title, service.Duration, service.Price);
+        await _context.Services.AddAsync(service, cancellationToken);
     }
 
     public async Task<ServiceDto> UpdateAsync(Guid id, string title, TimeSpan duration, decimal price)
@@ -33,7 +28,6 @@ public class ServiceManager : IServiceManager
             throw new NotFoundException("Service not found");
 
         service.Update(title, duration, price);
-
         await _context.SaveChangesAsync();
 
         return new ServiceDto(service.Id, service.Title, service.Duration, service.Price);

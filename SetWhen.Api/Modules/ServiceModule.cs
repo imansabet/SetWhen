@@ -1,5 +1,6 @@
 ﻿using Carter;
 using MediatR;
+using SetWhen.Application.DTOs;
 using SetWhen.Application.Features.Services.Commands;
 using SetWhen.Application.Features.Services.Queries;
 
@@ -14,11 +15,12 @@ public class ServiceModule : CarterModule
             return Results.Ok(result);
         });
 
-        app.MapPost("/api/services", async (CreateServiceCommand command, ISender sender) =>
+       app.MapPost("/api/services", async (CreateServiceDto dto, ISender sender) =>
         {
-            var result = await sender.Send(command);
-            return Results.Created($"/api/services/{result.Id}", result);
-        });
+            var serviceId = await sender.Send(new CreateServiceCommand(dto));
+            return Results.Created($"/api/services/{serviceId}", new { serviceId });
+        })
+        .RequireAuthorization("StaffOnly");
 
         app.MapPut("/api/services/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender sender) =>
         {

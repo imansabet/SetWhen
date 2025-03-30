@@ -2,4 +2,4 @@
 using SetWhen.Application.DTOs;
 
 namespace SetWhen.Application.Features.Services.Commands;
-public record CreateServiceCommand(string Title, TimeSpan Duration, decimal Price) : IRequest<ServiceDto>;
+public record CreateServiceCommand(CreateServiceDto ServiceData) : IRequest<Guid>;
