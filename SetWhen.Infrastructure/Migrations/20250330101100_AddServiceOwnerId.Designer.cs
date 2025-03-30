@@ -12,8 +12,8 @@ using SetWhen.Infrastructure.Persistence;
 namespace SetWhen.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250326161000_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250330101100_AddServiceOwnerId")]
+    partial class AddServiceOwnerId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,10 @@ namespace SetWhen.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("StaffId");
+
                     b.ToTable("Reservations");
                 });
 
@@ -59,6 +63,9 @@ namespace SetWhen.Infrastructure.Migrations
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -78,7 +85,7 @@ namespace SetWhen.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Day")
+                    b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
                     b.Property<Guid>("StaffId")
@@ -113,6 +120,25 @@ namespace SetWhen.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.Reservation", b =>
+                {
+                    b.HasOne("SetWhen.Domain.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SetWhen.Domain.Entities.User", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("SetWhen.Domain.Entities.StaffAvailability", b =>
