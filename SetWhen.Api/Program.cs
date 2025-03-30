@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SetWhen.Application.Features.Reservations.Commands;
 using SetWhen.Application.Interfaces;
+using SetWhen.Infrastructure.Middleware;
 using SetWhen.Infrastructure.Persistence;
 using SetWhen.Infrastructure.Services;
 using StackExchange.Redis;
@@ -78,6 +79,9 @@ if (app.Environment.IsDevelopment())
 app.MapCarter();
 
 app.UseHttpsRedirection();
+
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

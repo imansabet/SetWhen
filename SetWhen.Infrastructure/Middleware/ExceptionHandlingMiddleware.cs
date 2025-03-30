@@ -3,11 +3,9 @@ using SetWhen.Domain.Exceptions;
 using System.Net.Http;
 using System.Net;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Json;
-using Microsoft.AspNetCore.Http.Extensions;
+using System.Text.Json;
 
 namespace SetWhen.Infrastructure.Middleware;
-
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -28,13 +26,20 @@ public class ExceptionHandlingMiddleware
         catch (BusinessRuleException ex)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+            context.Response.ContentType = "application/json";
+
+            var result = JsonSerializer.Serialize(new { error = ex.Message });
+            await context.Response.WriteAsync(result);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception occurred");
+
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsJsonAsync(new { error = "Something went wrong." });
+            context.Response.ContentType = "application/json";
+
+            var result = JsonSerializer.Serialize(new { error = "Something went wrong." });
+            await context.Response.WriteAsync(result);
         }
     }
 }
