@@ -56,6 +56,7 @@ builder.Services.AddScoped<IServiceLookupService, ServiceLookupService>();
 builder.Services.AddScoped<IServiceQueryService, ServiceQueryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IBusinessService, BusinessService>();
 
 
 builder.Services.AddHttpContextAccessor();
