@@ -12,8 +12,8 @@ using SetWhen.Infrastructure.Persistence;
 namespace SetWhen.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250330101100_AddServiceOwnerId")]
-    partial class AddServiceOwnerId
+    [Migration("20250331201036_InitialClean")]
+    partial class InitialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,38 @@ namespace SetWhen.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.Business", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Businesses");
+                });
 
             modelBuilder.Entity("SetWhen.Domain.Entities.Reservation", b =>
                 {
@@ -61,6 +93,9 @@ namespace SetWhen.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
 
@@ -75,6 +110,8 @@ namespace SetWhen.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusinessId");
 
                     b.ToTable("Services");
                 });
@@ -102,6 +139,9 @@ namespace SetWhen.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -119,7 +159,20 @@ namespace SetWhen.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BusinessId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.Business", b =>
+                {
+                    b.HasOne("SetWhen.Domain.Entities.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SetWhen.Domain.Entities.Reservation", b =>
@@ -139,6 +192,13 @@ namespace SetWhen.Infrastructure.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.Service", b =>
+                {
+                    b.HasOne("SetWhen.Domain.Entities.Business", null)
+                        .WithMany("Services")
+                        .HasForeignKey("BusinessId");
                 });
 
             modelBuilder.Entity("SetWhen.Domain.Entities.StaffAvailability", b =>
@@ -164,6 +224,20 @@ namespace SetWhen.Infrastructure.Migrations
 
                     b.Navigation("TimeRange")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.User", b =>
+                {
+                    b.HasOne("SetWhen.Domain.Entities.Business", null)
+                        .WithMany("Staff")
+                        .HasForeignKey("BusinessId");
+                });
+
+            modelBuilder.Entity("SetWhen.Domain.Entities.Business", b =>
+                {
+                    b.Navigation("Services");
+
+                    b.Navigation("Staff");
                 });
 #pragma warning restore 612, 618
         }
