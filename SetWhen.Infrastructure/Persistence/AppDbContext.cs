@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<StaffAvailability> StaffAvailabilities => Set<StaffAvailability>();
+    public DbSet<Business> Businesses => Set<Business>();
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -32,5 +33,11 @@ public class AppDbContext : DbContext
             .HasOne(r => r.Staff)
             .WithMany()
             .HasForeignKey(r => r.StaffId);
+
+        modelBuilder.Entity<Business>()
+            .HasOne(b => b.Owner)
+            .WithMany()
+            .HasForeignKey(b => b.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
