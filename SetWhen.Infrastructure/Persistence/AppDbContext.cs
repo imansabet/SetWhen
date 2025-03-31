@@ -39,5 +39,11 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(b => b.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        modelBuilder.Entity<Service>()
+            .HasOne(s => s.Owner)
+            .WithMany()
+            .HasForeignKey(s => s.OwnerId);
     }
 }

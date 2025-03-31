@@ -6,6 +6,8 @@ public class Service
     public TimeSpan Duration { get; private set; }
     public decimal Price { get; private set; }
     public Guid OwnerId { get; private set; }
+    public User? Owner { get; private set; }
+
     private Service() { }
 
     public Service(string title, TimeSpan duration, decimal price, Guid ownerId)
