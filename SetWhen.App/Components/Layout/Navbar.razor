@@ -1,0 +1,39 @@
+﻿<div class="navbar bg-app-primary text-white" >
+    <h4 class="text-center m-0 p-0">
+        SetWhen 
+    </h4>
+    <div class="navbar-item ">
+        <i class="bx bx-plus-circle" ></i> 
+        <span>رزرو جدید</span>
+    </div>
+</div>
+
+
+
+
+@code {
+
+}
+
+<style>
+    .navbar
+    {
+        height: var(--navbar-height) ;
+        position : sticky ;
+        z-index : 10;
+        top : 0;
+        display : flex;
+        justify-content : space-between;
+        align-items : center;
+        padding : 10px;
+        font-size : 18px ;
+        box-shadow : 0 5px 8px rgba(0,0,0,0.2)
+    }
+
+    .navbar-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 15px;
+    }
+</style>

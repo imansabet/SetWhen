@@ -1,0 +1,48 @@
+﻿<div class="tabbar">
+    <div class="tabbar-item">
+        <i class="icon bx bx-category"></i>
+        <span class="title text-secondary">دسته بندی</span>
+    </div>
+    <div class="tabbar-item">
+        <i class="icon bx bx-objects-horizontal-left"></i>
+        <span class="title text-secondary">رزروهای من</span>
+    </div>
+    <div class="tabbar-item">
+        <i class="icon bx bx-user"></i>
+        <span class="title text-secondary">پروفایل</span>
+    </div>
+    <div class="tabbar-item">
+        <i class="icon bx bx-home"></i>
+        <span class="title text-secondary">خانه</span>
+    </div>
+</div>
+
+
+@code {
+
+}
+
+<style>
+    .tabbar {
+    height: var(--tabbar-height);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 0 8px gray;
+    z-index: 10;
+    padding: 8px 0;
+}
+
+.tabbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+</style>
