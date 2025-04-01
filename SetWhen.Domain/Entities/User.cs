@@ -13,7 +13,7 @@ public class User
     public string Email { get; private set; }
     public string PhoneNumber { get; private set; }
     public UserRole Role { get; private set; }
-
+    public Guid? BusinessId { get; private set; }
     protected User() { }
 
     public static User Create(string fullName, string email, string phoneNumber, UserRole role)
@@ -32,5 +32,11 @@ public class User
     {
         FullName = fullName;
         Email = email;
+    }
+
+    public void AssignToBusiness(Guid businessId)
+    {
+        BusinessId = businessId;
+        Role = UserRole.Staff;
     }
 }

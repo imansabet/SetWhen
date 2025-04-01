@@ -23,16 +23,28 @@ public class BusinessService : IBusinessService
     public async Task<Guid> AddStaffToBusinessAsync(Guid businessId, string fullName, string email, string phoneNumber, Guid ownerId, CancellationToken cancellationToken)
     {
         var business = await _context.Businesses
-            .Include(b => b.Staff)
             .FirstOrDefaultAsync(b => b.Id == businessId && b.OwnerId == ownerId, cancellationToken);
 
         if (business is null)
-            throw new UnauthorizedAccessException("Business not found or access denied.");
+            throw new UnauthorizedAccessException("You are not the owner of this business.");
 
-        var staff = User.Create(fullName, email, phoneNumber, UserRole.Staff);
-        business.Staff.Add(staff);
+        var staff = await _context.Users
+            .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber, cancellationToken);
+
+        if (staff is null)
+        {
+            staff = User.Create(fullName, email, phoneNumber, UserRole.Staff);
+            staff.AssignToBusiness(businessId);
+            _context.Users.Add(staff);
+        }
+        else
+        {
+            staff.UpdateProfile(fullName, email);
+            staff.AssignToBusiness(businessId);
+        }
 
         await _context.SaveChangesAsync(cancellationToken);
-        return staff.Id;
+
+        return staff.Id; 
     }
 }
