@@ -1,0 +1,34 @@
+﻿@page "/"
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-6">
+    <MudText Typo="Typo.h5" GutterBottom="true">   خوش اومدی به setwhen   </MudText>
+
+    <MudGrid Class="mt-4">
+        <MudItem xs="6">
+            <MudCard Style="Cursor:pointer;" OnClick="@(() => NavigateTo("services"))">
+                 <MudCardContent>
+                   <MudText Typo="Typo.subtitle1">خدمات</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="6">
+            <MudCard Style="cursor: pointer;" OnClick="@(() => NavigateTo("profile"))">
+                <MudCardContent>
+                    <MudText Typo="Typo.subtitle1">پروفایل</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+
+</MudContainer>
+
+
+@code {
+    private void NavigateTo(string route)
+    {
+        NavigationManager.NavigateTo($"/{route}");
+    }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+}
