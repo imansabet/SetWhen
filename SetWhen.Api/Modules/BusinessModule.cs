@@ -24,7 +24,8 @@ public class BusinessModule : CarterModule
           .RequireAuthorization();
 
 
-        app.MapPost("/api/businesses/{businessId:guid}/staff", async (
+        app.MapPost("/api/businesses/{businessId:guid}/staff", 
+            async (
             Guid businessId,
             AddStaffCommand command,
             ISender sender) =>
@@ -35,5 +36,16 @@ public class BusinessModule : CarterModule
             var id = await sender.Send(command);
             return Results.Created($"/api/users/{id}", new { id });
         }).RequireAuthorization("StaffOnly");
+
+
+
+        app.MapGet("/api/businesses/{businessId:guid}/dashboard", 
+            async (
+            Guid businessId, ISender sender) =>
+        {
+            var result = await sender.Send(new GetBusinessDashboardQuery(businessId));
+            return Results.Ok(result);
+        })
+        .RequireAuthorization("StaffOnly");
     }
-}
+} 
