@@ -14,6 +14,12 @@ public class ServiceModule : CarterModule
             var result = await sender.Send(new GetAllServicesQuery());
             return Results.Ok(result);
         });
+        app.MapGet("/api/my-services", async (ISender sender) =>
+        {
+            var result = await sender.Send(new GetMyServicesQuery());
+            return Results.Ok(result);
+        })
+       .RequireAuthorization("StaffOnly");
 
         app.MapPost("/api/services", async (CreateServiceDto dto, ISender sender) =>
         {
@@ -22,6 +28,7 @@ public class ServiceModule : CarterModule
             return Results.Created($"/api/services/{result.Id}", result);
         })
         .RequireAuthorization("StaffOnly");
+
 
         app.MapPut("/api/services/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender sender) =>
         {
@@ -32,6 +39,7 @@ public class ServiceModule : CarterModule
             return Results.Ok(result);
         })
         .RequireAuthorization("StaffOnly");
+
 
         app.MapDelete("/api/services/{id:guid}", async (Guid id, ISender sender) =>
         {

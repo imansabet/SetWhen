@@ -23,4 +23,12 @@ public class ServiceQueryService : IServiceQueryService
                 s.Price
             )).ToListAsync();
     }
+
+    public async Task<List<ServiceDto>> GetServicesByOwnerAsync(Guid ownerId)
+    {
+        return await _context.Services
+            .Where(s => s.OwnerId == ownerId)
+            .Select(s => new ServiceDto(s.Id, s.Title, s.Duration, s.Price))
+            .ToListAsync();
+    }
 }
