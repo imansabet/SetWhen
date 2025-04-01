@@ -15,9 +15,14 @@ public class ServiceManager : IServiceManager
         _context = context;
     }
 
-    public async Task AddAsync(Service service, CancellationToken cancellationToken)
+    public async Task<ServiceDto> CreateAsync(string title, TimeSpan duration, decimal price, Guid ownerId)
     {
-        await _context.Services.AddAsync(service, cancellationToken);
+        var service = new Service(title, duration, price, ownerId);
+
+        _context.Services.Add(service);
+        await _context.SaveChangesAsync();
+
+        return new ServiceDto(service.Id, service.Title, service.Duration, service.Price);
     }
 
     public async Task<ServiceDto> UpdateAsync(Guid serviceId, string title, TimeSpan duration, decimal price, Guid userId)
