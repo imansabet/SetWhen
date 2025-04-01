@@ -47,5 +47,17 @@ public class BusinessModule : CarterModule
             return Results.Ok(result);
         })
         .RequireAuthorization("StaffOnly");
+
+
+
+        app.MapGet("/api/businesses/{businessId:guid}/staff"
+            , async (
+                Guid businessId,
+                ISender sender) =>
+                {
+                    var result = await sender.Send(new GetBusinessStaffQuery(businessId));
+                    return Results.Ok(result);
+                })
+                    .RequireAuthorization("StaffOnly");
     }
-} 
+}   

@@ -38,4 +38,19 @@ public class BusinessQueryService : IBusinessQueryService
 
         return new BusinessDashboardDto(totalReservations, completedReservations, todaysReservations, staffCount);
     }
+
+
+    public async Task<List<StaffDto>> GetBusinessStaffAsync(Guid businessId, Guid ownerId, CancellationToken cancellationToken)
+    {
+        var business = await _context.Businesses
+            .Include(b => b.Staff)
+            .FirstOrDefaultAsync(b => b.Id == businessId && b.OwnerId == ownerId, cancellationToken);
+
+        if (business == null)
+            throw new UnauthorizedAccessException("You do not own this business");
+
+        return business.Staff
+            .Select(s => new StaffDto(s.Id, s.FullName, s.Email, s.PhoneNumber))
+            .ToList();
+    }
 }

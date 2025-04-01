@@ -7,4 +7,7 @@ public interface IBusinessQueryService
 
     Task<BusinessDashboardDto> GetDashboardAsync(Guid businessId, CancellationToken cancellationToken);
 
+    Task<List<StaffDto>> GetBusinessStaffAsync(Guid businessId, Guid ownerId, CancellationToken cancellationToken);
+
+
 }
