@@ -23,5 +23,17 @@ public class BusinessModule : CarterModule
         })
           .RequireAuthorization();
 
+
+        app.MapPost("/api/businesses/{businessId:guid}/staff", async (
+            Guid businessId,
+            AddStaffCommand command,
+            ISender sender) =>
+        {
+            if (command.BusinessId != businessId)
+                return Results.BadRequest("Mismatch between route and body businessId");
+
+            var id = await sender.Send(command);
+            return Results.Created($"/api/users/{id}", new { id });
+        }).RequireAuthorization("StaffOnly");
     }
 }
