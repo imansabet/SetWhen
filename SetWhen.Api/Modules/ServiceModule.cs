@@ -15,10 +15,11 @@ public class ServiceModule : CarterModule
             return Results.Ok(result);
         });
 
-       app.MapPost("/api/services", async (CreateServiceDto dto, ISender sender) =>
+        app.MapPost("/api/services", async (CreateServiceDto dto, ISender sender) =>
         {
-            var serviceId = await sender.Send(new CreateServiceCommand(dto));
-            return Results.Created($"/api/services/{serviceId}", new { serviceId });
+            var command = new CreateServiceCommand(dto.Title, dto.Duration, dto.Price);
+            var result = await sender.Send(command);
+            return Results.Created($"/api/services/{result.Id}", result);
         })
         .RequireAuthorization("StaffOnly");
 
