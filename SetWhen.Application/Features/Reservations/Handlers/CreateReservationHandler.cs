@@ -7,24 +7,30 @@ public class CreateReservationHandler : IRequestHandler<CreateReservationCommand
 {
     private readonly IReservationService _reservationService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUser _currentUser;
 
-    public CreateReservationHandler(IReservationService reservationService, IUnitOfWork unitOfWork)
+    public CreateReservationHandler(
+        IReservationService reservationService,
+        IUnitOfWork unitOfWork,
+        ICurrentUser currentUser)
     {
         _reservationService = reservationService;
         _unitOfWork = unitOfWork;
+        _currentUser = currentUser;
     }
 
     public async Task<Guid> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
+        var customerId = _currentUser.GetUserId();
+
         var reservationId = await _reservationService.CreateReservationAsync(
-            request.CustomerId,
+            customerId,
             request.ServiceId,
             request.StaffId,
             request.StartTime
         );
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-
         return reservationId;
     }
 }

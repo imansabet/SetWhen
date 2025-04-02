@@ -82,6 +82,7 @@ public class ReservationService : IReservationService
             ?? throw new NotFoundException("Reservation not found");
 
         reservation.Confirm();
+        await _context.SaveChangesAsync();
     }
 
     public async Task CompleteReservationAsync(Guid reservationId)
@@ -90,5 +91,6 @@ public class ReservationService : IReservationService
             ?? throw new NotFoundException("Reservation not found");
 
         reservation.Complete();
+        await _context.SaveChangesAsync();
     }
 }
