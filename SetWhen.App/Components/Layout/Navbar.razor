@@ -1,9 +1,12 @@
-﻿<div class="navbar bg-app-primary text-white" >
-    <h4 class="text-center m-0 p-0">
-        SetWhen 
-    </h4>
-    <div class="navbar-item ">
-        <i class="bx bx-plus-circle" ></i> 
+﻿@inject NavigationManager Navigation
+@inject TokenStorageService TokenStorage
+
+<div class="navbar bg-app-primary text-white" >
+    <div class="navbar-title d-flex align-items-center justify-content-center" @onclick="GoToHome">
+    <i class="bx bx-time bx-sm me-1"></i> SetWhen
+    </div>
+    <div class="navbar-item" @onclick="HandleNewReservationClick">
+        <i class="bx bx-plus-circle"></i>
         <span>رزرو جدید</span>
     </div>
 </div>
@@ -12,6 +15,25 @@
 
 
 @code {
+    private async Task HandleNewReservationClick()
+    {
+        var token = await TokenStorage.GetTokenAsync();
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Navigation.NavigateTo("/login?returnUrl=/reserve");
+        }
+        else
+        {
+            Navigation.NavigateTo("/reserve");
+        }
+    }
+
+    private async Task GoToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
 
 }
 

@@ -14,13 +14,21 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(SetWhen.Application.Features.Reservations.Commands.CreateReservationCommand).Assembly));
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors();
 
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
 var app = builder.Build();
 
 // Middlewares
 if (app.Environment.IsDevelopment())
     app.MapOpenApi();
+
+app.UseCors(policy =>
+    policy.AllowAnyOrigin()
+          .AllowAnyHeader()
+          .AllowAnyMethod());
+
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

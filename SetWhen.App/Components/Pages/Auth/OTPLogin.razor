@@ -1,9 +1,9 @@
 ﻿@page "/login"
+@inject TokenStorageService TokenStorage
 
 @inject IAuthApi AuthApi
-@inject NavigationManager Navigation
+@inject NavigationManager Nav
 @inject IJSRuntime JS
-
 
 <h3 class="text-center my-3">ورود با شماره موبایل</h3>
 
@@ -28,6 +28,11 @@ else
     private VerifyOtpDto otpModel = new();
     private bool otpSent = false;
 
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+
     private async Task SendOtpAsync()
     {
        try
@@ -37,9 +42,10 @@ else
             otpSent = true;
             await JS.InvokeVoidAsync("alert", "کد ارسال شد ");
         }
-        catch
+        catch(Exception ex)
         {
-            await JS.InvokeVoidAsync("alert", "خطا در ارسال کد");
+            await JS.InvokeVoidAsync("alert", $"خطا: {ex.Message}");
+
         }     
     }
 
@@ -49,9 +55,14 @@ else
         try
         {
             var result = await AuthApi.VerifyOtpAsync(otpModel);
+            if (!string.IsNullOrEmpty(result.Token))
+            {
+                await TokenStorage.SaveTokenAsync(result.Token);
+
+                Nav.NavigateTo(ReturnUrl ?? "/profile");
+            }
 
             await JS.InvokeVoidAsync("alert", $"ورود موفق: {result.PhoneNumber}");
-            Navigation.NavigateTo("/profile"); 
         }
         catch
         {

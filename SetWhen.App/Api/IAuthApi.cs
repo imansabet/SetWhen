@@ -3,6 +3,7 @@ using SetWhen.App.DTOs;
 
 namespace SetWhen.App.Api;
 
+[Headers("Authorization : Bearer")]
 public interface IAuthApi
 {
     [Post("/api/auth/request-code")]
