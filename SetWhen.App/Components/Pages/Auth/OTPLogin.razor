@@ -1,0 +1,62 @@
+﻿@page "/login"
+
+@inject IAuthApi AuthApi
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+
+<h3 class="text-center my-3">ورود با شماره موبایل</h3>
+
+@if (!otpSent)
+{
+    <EditForm Model="@phoneModel" OnValidSubmit="SendOtpAsync">
+        <InputText @bind-Value="phoneModel.Phone" class="form-control my-2" placeholder="شماره موبایل" />
+        <button type="submit" class="btn btn-primary w-100">دریافت کد</button>
+    </EditForm>
+}
+else
+{
+    <EditForm Model="@otpModel" OnValidSubmit="VerifyOtpAsync">
+        <InputText @bind-Value="otpModel.Code" class="form-control my-2" placeholder="کد تایید" />
+        <button type="submit" class="btn btn-success w-100">ورود</button>
+    </EditForm>
+}
+
+
+@code {
+    private RequestOtpDto phoneModel = new();
+    private VerifyOtpDto otpModel = new();
+    private bool otpSent = false;
+
+    private async Task SendOtpAsync()
+    {
+       try
+        {
+            await AuthApi.RequestOtpAsync(phoneModel);
+            otpModel.Phone = phoneModel.Phone;
+            otpSent = true;
+            await JS.InvokeVoidAsync("alert", "کد ارسال شد ");
+        }
+        catch
+        {
+            await JS.InvokeVoidAsync("alert", "خطا در ارسال کد");
+        }     
+    }
+
+
+    private async Task VerifyOtpAsync()
+    {
+        try
+        {
+            var result = await AuthApi.VerifyOtpAsync(otpModel);
+
+            await JS.InvokeVoidAsync("alert", $"ورود موفق: {result.PhoneNumber}");
+            Navigation.NavigateTo("/profile"); 
+        }
+        catch
+        {
+            await JS.InvokeVoidAsync("alert", "کد نادرست است");
+        }
+    }
+
+}

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using Refit;
+using SetWhen.App.Api;
 
 namespace SetWhen.App
 {
@@ -17,9 +19,15 @@ namespace SetWhen.App
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
+            builder.Services
+            .AddRefitClient<IAuthApi>()
+            .ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri("https://localhost:7128/");
+            });
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
