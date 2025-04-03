@@ -10,7 +10,9 @@ public class TokenStorageService
 
     public async Task<string?> GetTokenAsync()
     {
-        return await SecureStorage.GetAsync(TokenKey);
+        var token = await SecureStorage.GetAsync(TokenKey);
+        Console.WriteLine($"[TokenStorage] Token = {token}");
+        return token;
     }
 
     public void RemoveToken()
@@ -19,7 +21,7 @@ public class TokenStorageService
     }
     public Task LogoutAsync()
     {
-        SecureStorage.Remove("token");
+        SecureStorage.Remove("auth_token");
         SecureStorage.Remove("user_role");
         return Task.CompletedTask;
     }

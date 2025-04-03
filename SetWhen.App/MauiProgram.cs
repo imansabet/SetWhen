@@ -23,6 +23,7 @@ namespace SetWhen.App
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
 
+            // Service Registrations
             builder.Services.AddSingleton<TokenStorageService>();
             builder.Services.AddTransient<TokenAuthHandler>();
 
@@ -38,22 +39,17 @@ namespace SetWhen.App
 
         private static void ConfigureRefit(IServiceCollection services)
         {
-            services.AddRefitClient<IAuthApi>(GetRefitSettings)
-                .ConfigurePrimaryHttpMessageHandler(() =>
-                    new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                    })
-                .ConfigureHttpClient(SetHttpclient);
+            // Base URL Setter
+            static void SetHttpClient(HttpClient httpClient)
+            {
+                var baseApiUrl = DeviceInfo.Platform == DevicePlatform.Android
+                    ? "https://10.0.2.2:7128"
+                    : "https://localhost:7128";
 
-            services.AddRefitClient<IBusinessApi>(GetRefitSettings)
-                .ConfigurePrimaryHttpMessageHandler(() =>
-                    new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                    })
-                .ConfigureHttpClient(SetHttpclient);
+                httpClient.BaseAddress = new Uri(baseApiUrl);
+            }
 
+            // Authorization Getter for Refit
             static RefitSettings GetRefitSettings(IServiceProvider serviceProvider)
             {
                 var settings = new RefitSettings();
@@ -66,14 +62,22 @@ namespace SetWhen.App
                 return settings;
             }
 
-            static void SetHttpclient(HttpClient httpClient)
-            {
-                var baseApiUrl = DeviceInfo.Platform == DevicePlatform.Android
-                    ? "https://10.0.2.2:7128"
-                    : "https://localhost:7128";
+            services.AddRefitClient<IAuthApi>(GetRefitSettings)
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                    new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true
+                    })
+                .ConfigureHttpClient(SetHttpClient);
 
-                httpClient.BaseAddress = new Uri(baseApiUrl);
-            }
+            services.AddRefitClient<IBusinessApi>(GetRefitSettings)
+                .AddHttpMessageHandler<TokenAuthHandler>() 
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                    new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = (_, __, ___, ____) => true
+                    })
+                .ConfigureHttpClient(SetHttpClient);
         }
     }
 }

@@ -15,7 +15,8 @@ public class TokenAuthHandler : DelegatingHandler
         var token = await _tokenStorage.GetTokenAsync();
         if (!string.IsNullOrEmpty(token))
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            Console.WriteLine($"[RefitHandler] Using Token: {token}");
         }
 
         return await base.SendAsync(request, cancellationToken);

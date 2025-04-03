@@ -77,11 +77,15 @@ else
             {
                 await TokenStorage.SaveTokenAsync(result.Token);
                 await TokenStorage.SaveRoleAsync(result.Role);
+                
+                await Task.Delay(500);
+
+
 
                 if (result.Role == "Customer")
                     Nav.NavigateTo("/customer/home");
                 else if (result.Role == "Staff")
-                    Nav.NavigateTo("/Business/home");
+                    Nav.NavigateTo("/owner/home");
                 else
                     Nav.NavigateTo("/");
             }

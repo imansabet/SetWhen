@@ -1,0 +1,44 @@
+﻿@page "/owner/businesses"
+@inject IBusinessApi BusinessApi
+@inject IJSRuntime JS
+
+<h3 class="text-center my-3">کسب‌و‌کارهای من</h3>
+
+@if (businesses is null)
+{
+    <p class="text-center">در حال بارگذاری...</p>
+}
+else if (!businesses.Any())
+{
+    <p class="text-center text-muted">هنوز هیچ کسب‌و‌کاری ثبت نکرده‌اید.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var b in businesses)
+        {
+            <div class="list-group-item">
+                <h5>@b.Name</h5>
+                <p>نوع: @b.Type | شهر: @b.City</p>
+                <p class="text-muted">@b.Address</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<BusinessDto>? businesses;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            businesses = await BusinessApi.GetMyBusinessesAsync();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا در دریافت اطلاعات: {ex.Message}");
+        }
+    }
+}

@@ -3,7 +3,7 @@ using SetWhen.App.DTOs;
 
 namespace SetWhen.App.Api;
 
-[Headers("Authorization: Bearer")]
+//[Headers("Authorization: Bearer")]
 public interface IBusinessApi
 {
     [Post("/api/businesses")]

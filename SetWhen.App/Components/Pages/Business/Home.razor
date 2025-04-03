@@ -1,4 +1,8 @@
 ﻿@page "/owner/home"
+@inject IBusinessApi BusinessApi
+@inject IJSRuntime JS
+@inject TokenStorageService TokenStorage
+@inject NavigationManager Nav
 
 <h3>خوش آمدید به پنل صاحب کسب‌و‌کار!</h3>
 
@@ -6,8 +10,48 @@
 <NavLink class="btn btn-success" href="/owner/business/create">
     + ایجاد کسب‌و‌کار
 </NavLink>
-
+@if (businesses is null)
+{
+    <p class="text-center">در حال بارگذاری لیست کسب‌و‌کارها...</p>
+}
+else if (!businesses.Any())
+{
+    <p class="text-center text-muted">هنوز کسب‌و‌کاری ثبت نشده است.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var b in businesses)
+        {
+            <div class="list-group-item">
+                <h5>@b.Name</h5>
+                <p>📍 @b.City - @b.Address</p>
+                <small class="text-muted">نوع: @b.Type</small>
+            </div>
+        }
+    </div>
+}
 
 @code {
+    private List<BusinessDto>? businesses;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+        var token = await TokenStorage.GetTokenAsync();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Nav.NavigateTo("/login?returnUrl=/owner/home");
+            return;
+        }
+
+        try
+        {
+            businesses = await BusinessApi.GetMyBusinessesAsync();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا در دریافت کسب‌و‌کارها: {ex.Message}");
+        }
+    }
 }
