@@ -1,0 +1,37 @@
+﻿@page "/owner/business/create"
+
+@inject IBusinessApi BusinessApi
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+
+<h3 class="text-center my-3">ایجاد کسب‌و‌کار جدید</h3>
+
+<EditForm Model="@model" OnValidSubmit="HandleCreateAsync">
+    <InputText @bind-Value="model.Name" class="form-control my-2" placeholder="نام کسب‌و‌کار" />
+    <InputText @bind-Value="model.Type" class="form-control my-2" placeholder="نوع کسب‌و‌کار (مثلاً Salon)" />
+    <InputText @bind-Value="model.City" class="form-control my-2" placeholder="شهر" />
+    <InputText @bind-Value="model.Address" class="form-control my-2" placeholder="آدرس کامل" />
+    
+    <button type="submit" class="btn btn-primary w-100 mt-3">ثبت کسب‌و‌کار</button>
+</EditForm>
+
+@code {
+    private CreateBusinessDto model = new();
+
+    private async Task HandleCreateAsync()
+    {
+        try
+        {
+            var result = await BusinessApi.CreateBusinessAsync(model);
+            await JS.InvokeVoidAsync("alert", $"کسب‌و‌کار ایجاد شد ✅");
+
+            // بعد از ساخت، می‌تونیم کاربر رو به لیست کسب‌وکارها هدایت کنیم
+            Nav.NavigateTo("/owner/businesses");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا در ایجاد کسب‌و‌کار: {ex.Message}");
+        }
+    }
+}

@@ -12,6 +12,7 @@ namespace SetWhen.App
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -22,17 +23,14 @@ namespace SetWhen.App
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
 
-           
-
             builder.Services.AddSingleton<TokenStorageService>();
-
             builder.Services.AddTransient<TokenAuthHandler>();
-
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+
             ConfigureRefit(builder.Services);
 
             return builder.Build();
@@ -40,26 +38,31 @@ namespace SetWhen.App
 
         private static void ConfigureRefit(IServiceCollection services)
         {
-                
-
             services.AddRefitClient<IAuthApi>(GetRefitSettings)
-            .ConfigurePrimaryHttpMessageHandler(() =>
-                new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                })
-            .ConfigureHttpClient(SetHttpclient);
-                    static RefitSettings GetRefitSettings(IServiceProvider serviceProvider) 
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                    new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                    })
+                .ConfigureHttpClient(SetHttpclient);
+
+            services.AddRefitClient<IBusinessApi>(GetRefitSettings)
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                    new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                    })
+                .ConfigureHttpClient(SetHttpclient);
+
+            static RefitSettings GetRefitSettings(IServiceProvider serviceProvider)
             {
                 var settings = new RefitSettings();
                 settings.AuthorizationHeaderValueGetter = async (_, __) =>
                 {
                     var tokenService = serviceProvider.GetRequiredService<TokenStorageService>();
                     var token = await tokenService.GetTokenAsync();
-
                     return string.IsNullOrWhiteSpace(token) ? null : token;
-
-                }; 
+                };
                 return settings;
             }
 
@@ -71,8 +74,6 @@ namespace SetWhen.App
 
                 httpClient.BaseAddress = new Uri(baseApiUrl);
             }
-
-
         }
     }
 }
