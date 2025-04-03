@@ -13,7 +13,7 @@ public class UserService : IUserService
         _context = context;
     }
 
-    public async Task<User> GetOrCreateAsync(string phoneNumber, CancellationToken cancellationToken)
+    public async Task<User> GetOrCreateAsync(string phoneNumber, string role , CancellationToken cancellationToken)
     {
         Console.WriteLine($"[UserService] 🔍 Checking user by phone: {phoneNumber}");
 
@@ -24,7 +24,11 @@ public class UserService : IUserService
         {
             Console.WriteLine($"[UserService] ❌ No user found. Creating new one...");
 
-            user = User.Create("بدون نام", "", phoneNumber, UserRole.Customer);
+            var parsedRole = Enum.TryParse<UserRole>(role, out var userRole)
+             ? userRole
+             : UserRole.Customer; // fallback default
+
+            user = User.Create("بدون نام", "", phoneNumber, parsedRole);
             _context.Users.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
 

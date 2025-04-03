@@ -2,4 +2,4 @@
 using SetWhen.Application.DTOs;
 
 namespace SetWhen.Application.Features.Auth.Commands;
-public record VerifyOtpCommand(string Phone, string Code) : IRequest<AuthResultDto>;
+public record VerifyOtpCommand(string Phone, string Code, string Role) : IRequest<AuthResultDto>;

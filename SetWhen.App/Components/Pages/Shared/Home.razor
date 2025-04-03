@@ -1,0 +1,29 @@
+﻿@page "/"
+
+@inject NavigationManager Navigation
+@inject TokenStorageService TokenStorage
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenStorage.GetTokenAsync();
+        var role = await TokenStorage.GetRoleAsync();
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            Navigation.NavigateTo("/landing");
+        }
+        else if (role == "Customer")
+        {
+            Navigation.NavigateTo("/customer/home");
+        }
+        else if (role == "Staff")
+        {
+            Navigation.NavigateTo("/staff/home");
+        }
+        else
+        {
+            Navigation.NavigateTo("/landing");
+        }
+    }
+}

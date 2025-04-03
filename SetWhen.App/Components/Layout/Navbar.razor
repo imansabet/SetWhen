@@ -9,6 +9,8 @@
         <i class="bx bx-plus-circle"></i>
         <span>رزرو جدید</span>
     </div>
+    <button class="btn btn-outline-light logout-btn" @onclick="Logout">خروج</button>
+
 </div>
 
 
@@ -33,7 +35,11 @@
     {
         Navigation.NavigateTo("/");
     }
-
+    private async Task Logout()
+    {
+        await TokenStorage.LogoutAsync();
+        Navigation.NavigateTo("/landing", true);
+    }
 
 }
 

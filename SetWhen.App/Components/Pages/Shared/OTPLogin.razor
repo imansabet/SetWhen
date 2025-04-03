@@ -24,6 +24,11 @@ else
 
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Role { get; set; }
+
+
     private RequestOtpDto phoneModel = new();
     private VerifyOtpDto otpModel = new();
     private bool otpSent = false;
@@ -31,6 +36,18 @@ else
     [Parameter]
     [SupplyParameterFromQuery]
     public string? ReturnUrl { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        var uri = Nav.ToAbsoluteUri(Nav.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+        if (query.TryGetValue("role", out var role))
+        {
+            otpModel.Role = role;
+        }
+    }
+
 
 
     private async Task SendOtpAsync()
@@ -55,11 +72,18 @@ else
         try
         {
             var result = await AuthApi.VerifyOtpAsync(otpModel);
+
             if (!string.IsNullOrEmpty(result.Token))
             {
                 await TokenStorage.SaveTokenAsync(result.Token);
+                await TokenStorage.SaveRoleAsync(result.Role);
 
-                Nav.NavigateTo(ReturnUrl ?? "/profile");
+                if (result.Role == "Customer")
+                    Nav.NavigateTo("/customer/home");
+                else if (result.Role == "Staff")
+                    Nav.NavigateTo("/owner/home");
+                else
+                    Nav.NavigateTo("/");
             }
 
             await JS.InvokeVoidAsync("alert", $"ورود موفق: {result.PhoneNumber}");

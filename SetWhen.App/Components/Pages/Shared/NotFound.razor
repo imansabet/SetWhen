@@ -1,0 +1,15 @@
+﻿@page "/notfound"
+@inject NavigationManager Navigation
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 80vh;">
+    <i class="bx bx-error bx-lg text-danger"></i>
+    <h2 class="text-danger mt-2">صفحه پیدا نشد</h2>
+    <p>مسیر وارد شده نادرست است یا این صفحه وجود ندارد.</p>
+    <button class="btn btn-primary mt-3" @onclick="GoHome">بازگشت به خانه</button>
+</div>
+
+@code {
+    private void GoHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

@@ -1,0 +1,19 @@
+﻿@page "/landing"
+@inject NavigationManager NavigationManager
+
+<div class="landing-container">
+    <h3 class="text-center">شما کدام هستید؟</h3>
+
+    <button class="btn btn-primary w-100 my-2" @onclick="NavigateAsCustomer">
+        مشتری هستم
+    </button>
+
+    <button class="btn btn-secondary w-100 my-2" @onclick="NavigateAsStaff">
+        صاحب کسب‌و‌کار هستم
+    </button>
+</div>
+
+@code {
+    private void NavigateAsCustomer() => NavigationManager.NavigateTo("/login?role=Customer");
+    private void NavigateAsStaff() => NavigationManager.NavigateTo("/login?role=Staff");
+}

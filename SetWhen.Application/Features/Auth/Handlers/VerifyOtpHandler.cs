@@ -30,7 +30,7 @@ public class VerifyOtpHandler : IRequestHandler<VerifyOtpCommand, AuthResultDto>
 
         await _otpStore.RemoveCodeAsync(request.Phone);
 
-        var user = await _userService.GetOrCreateAsync(request.Phone, cancellationToken);
+        var user = await _userService.GetOrCreateAsync(request.Phone, request.Role, cancellationToken);
 
         var token = _tokenService.GenerateToken(user.Id, user.Role.ToString());
 

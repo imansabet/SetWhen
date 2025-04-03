@@ -17,4 +17,25 @@ public class TokenStorageService
     {
         SecureStorage.Remove(TokenKey);
     }
+    public Task LogoutAsync()
+    {
+        SecureStorage.Remove("token");
+        SecureStorage.Remove("user_role");
+        return Task.CompletedTask;
+    }
+
+    public async Task SaveRoleAsync(string role)
+    {
+        await SecureStorage.Default.SetAsync("user_role", role);
+    }
+
+    public async Task<string?> GetRoleAsync()
+    {
+        return await SecureStorage.Default.GetAsync("user_role");
+    }
+
+    public void RemoveRole()
+    {
+        SecureStorage.Default.Remove("user_role");
+    }
 }
