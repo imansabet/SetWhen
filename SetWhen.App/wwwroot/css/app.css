@@ -1,8 +1,19 @@
 ﻿/*#if (SampleContent)*/
+/*Midnight Blue #191970 rgb(25, 25, 112)
+Navy Blue #000080 rgb(0, 0, 128)
+Neon Blue #1F51FF rgb(31, 81, 255)
+Pastel Blue #A7C7E7 rgb(167, 199, 231)
+Periwinkle #CCCCFF rgb(204, 204, 255)
+Powder Blue #B6D0E2 rgb(182, 208, 226)
+Robin Egg Blue #96DED1 rgb(150, 222, 209)
+Royal Blue #4169E1 rgb(65, 105, 225)
+Sapphire Blue #0F52BA rgb(15, 82, 186)
+Seafoam Green #9FE2BF rgb(159, 226, 191)
+Sky Blue #87CEEB rgb(135, 206, 235)*/
 :root {
     --app-lighter: #f3f0ff;
     --app-light: #e35c38;
-    --app-primary: #001b2e;
+    --app-primary: #0F52BA;
     --app-dark: #3b0a75;
     --app-secondary: #ff6f61;
     --navbar-height: 50px;

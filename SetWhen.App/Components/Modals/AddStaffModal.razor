@@ -1,0 +1,44 @@
+﻿@inherits ComponentBase 
+@inject IDialogService DialogService
+@inject IBusinessApi BusinessApi 
+@inject IJSRuntime JS
+
+<MudDialog>
+    <DialogContent>
+        <h5>افزودن کارمند جدید</h5>
+        <EditForm Model="staffModel" OnValidSubmit="HandleSubmit">
+            <InputText @bind-Value="staffModel.FullName" class="form-control my-2" placeholder="نام و نام خانوادگی" />
+            <InputText @bind-Value="staffModel.Email" class="form-control my-2" placeholder="ایمیل" />
+            <InputText @bind-Value="staffModel.PhoneNumber" class="form-control my-2" placeholder="شماره موبایل" />
+            <div class="d-flex justify-content-between mt-3">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" Type="Submit">افزودن</MudButton>
+                <MudButton Color="Color.Error" OnClick="Cancel">لغو</MudButton>
+            </div>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    public IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public Guid BusinessId { get; set; }
+
+    private AddStaffDto staffModel = new();
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            staffModel.BusinessId = BusinessId;
+            await BusinessApi.AddStaffAsync(BusinessId, staffModel);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا در افزودن کارمند: {ex.Message}");
+        }
+    }
+    private void Cancel() => MudDialog.Cancel();
+}
+
