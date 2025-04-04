@@ -14,4 +14,8 @@ public interface IBusinessApi
 
     [Post("/api/businesses/{businessId}/staff")]
     Task<ApiResponse<IdResponseDto>> AddStaffAsync(Guid businessId, [Body] AddStaffDto dto);
+
+
+    [Get("/api/businesses/{businessId}/staff")]
+    Task<List<UserDto>> GetStaffAsync(Guid businessId);
 }

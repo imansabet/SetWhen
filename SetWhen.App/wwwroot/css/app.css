@@ -1,8 +1,8 @@
 ﻿/*#if (SampleContent)*/
 :root {
     --app-lighter: #f3f0ff;
-    --app-light: #d0bfff;
-    --app-primary: #6f42c1;
+    --app-light: #e35c38;
+    --app-primary: #001b2e;
     --app-dark: #3b0a75;
     --app-secondary: #ff6f61;
     --navbar-height: 50px;

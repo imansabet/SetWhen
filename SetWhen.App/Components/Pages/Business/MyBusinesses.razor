@@ -22,9 +22,13 @@ else
                 <p>نوع: @b.Type | شهر: @b.City</p>
                 <p class="text-muted">@b.Address</p>
             </div>
+        <NavLink class="btn btn-outline-primary btn-sm" href="@($"/owner/business/{b.Id}/staff")">
+            مشاهده کارمندان
+        </NavLink>
         }
     </div>
 }
+
 
 @code {
     private List<BusinessDto>? businesses;

@@ -1,0 +1,80 @@
+﻿@page "/owner/business/{BusinessId:guid}/staff"
+@inject IBusinessApi BusinessApi 
+@inject IJSRuntime JS
+
+<h4 class="text-center my-3">کارکنان کسب‌و‌کار</h4>
+
+@if (staffs is null)
+{
+        <p class="text-center">در حال بارگذاری...</p>
+}
+else if (!staffs.Any())
+{
+        <p class="text-muted text-center">هیچ کارمندی ثبت نشده است.</p>
+}
+else
+{
+        <ul class="list-group">
+        @foreach (var s in staffs)
+        {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                @s.FullName
+                        <span class="badge bg-secondary">@s.PhoneNumber</span>
+                    </li>
+        }
+        </ul>
+}
+
+
+<h5 class="mt-4">افزودن کارمند جدید</h5>
+<EditForm Model="staffModel" OnValidSubmit="HandleAddStaff">
+    <InputText @bind-Value="staffModel.FullName" class="form-control my-2" placeholder="نام و نام خانوادگی" />
+    <InputText @bind-Value="staffModel.Email" class="form-control my-2" placeholder="ایمیل" />
+    <InputText @bind-Value="staffModel.PhoneNumber" class="form-control my-2" placeholder="شماره موبایل" />
+
+    <button class="btn btn-primary w-100 mt-2">افزودن</button>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public Guid BusinessId { get; set; }
+
+    private List<UserDto>? staffs;
+    private AddStaffDto staffModel = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStaffs();
+    }
+
+
+    private async Task LoadStaffs()
+    {
+        try
+        {
+            staffs = await BusinessApi.GetStaffAsync(BusinessId);
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا: {ex.Message}");
+        }
+    }
+
+    private async Task HandleAddStaff()
+    {
+        try
+        {
+            await BusinessApi.AddStaffAsync(BusinessId, staffModel);
+            staffModel = new(); // reset
+            await LoadStaffs(); // reload list
+            await JS.InvokeVoidAsync("alert", "کارمند جدید اضافه شد ✅");
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("alert", $"خطا: {ex.Message}");
+        }
+    }
+
+}
