@@ -1,46 +1,30 @@
-﻿@inject NavigationManager Navigation
-@inject TokenStorageService TokenStorage
+﻿@inject AuthStateService AuthState
+@inject NavigationManager Navigation
 
-<div class="navbar bg-app-primary text-white" >
+@inject AuthStateService AuthState
+@inject NavigationManager Nav
+
+<div class="navbar bg-app-primary text-white">
     <div class="navbar-title d-flex align-items-center justify-content-center" @onclick="GoToHome">
-    <i class="bx bx-time bx-sm me-1"></i> SetWhen
+        <i class="bx bx-time bx-sm me-1"></i> SetWhen
     </div>
-    <div class="navbar-item" @onclick="HandleNewReservationClick">
-        <i class="bx bx-plus-circle"></i>
-        <span>رزرو جدید</span>
-    </div>
-    <button class="btn btn-outline-light logout-btn" @onclick="Logout">خروج</button>
+    @if (AuthState.IsLoggedIn)
+    {
+        <button class="btn btn-outline-secondary " @onclick="Logout">خروج</button>
+    }
 
 </div>
-
-
-
-
 @code {
-    private async Task HandleNewReservationClick()
+    private async Task Logout()
     {
-        var token = await TokenStorage.GetTokenAsync();
-
-        if (string.IsNullOrWhiteSpace(token))
-        {
-            Navigation.NavigateTo("/login?returnUrl=/reserve");
-        }
-        else
-        {
-            Navigation.NavigateTo("/reserve");
-        }
+        await AuthState.LogoutAsync();
+        Nav.NavigateTo("/landing", true);
     }
 
     private async Task GoToHome()
     {
         Navigation.NavigateTo("/");
     }
-    private async Task Logout()
-    {
-        await TokenStorage.LogoutAsync();
-        Navigation.NavigateTo("/landing", true);
-    }
-
 }
 
 <style>

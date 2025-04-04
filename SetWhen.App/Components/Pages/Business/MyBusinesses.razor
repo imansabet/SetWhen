@@ -1,16 +1,18 @@
 ﻿@page "/owner/businesses"
 @inject IBusinessApi BusinessApi
 @inject IJSRuntime JS
+@inject AuthStateService AuthState
+@inject NavigationManager Nav
 
-<h3 class="text-center my-3">کسب‌و‌کارهای من</h3>
+<h3 class="text-center">کسب‌و‌کارهای من</h3>
 
-@if (businesses is null)
+@if (businesses == null)
 {
     <p class="text-center">در حال بارگذاری...</p>
 }
 else if (!businesses.Any())
 {
-    <p class="text-center text-muted">هنوز هیچ کسب‌و‌کاری ثبت نکرده‌اید.</p>
+    <p class="text-muted text-center">هنوز کسب‌و‌کاری ثبت نشده است.</p>
 }
 else
 {
@@ -21,28 +23,32 @@ else
                 <h5>@b.Name</h5>
                 <p>نوع: @b.Type | شهر: @b.City</p>
                 <p class="text-muted">@b.Address</p>
+                <NavLink class="btn btn-outline-primary btn-sm" href="@($"/owner/business/{b.Id}/staff")">
+                    مشاهده کارمندان
+                </NavLink>
             </div>
-        <NavLink class="btn btn-outline-primary btn-sm" href="@($"/owner/business/{b.Id}/staff")">
-            مشاهده کارمندان
-        </NavLink>
         }
     </div>
 }
 
-
 @code {
     private List<BusinessDto>? businesses;
 
-
     protected override async Task OnInitializedAsync()
     {
+        if (!AuthState.IsLoggedIn)
+        {
+            Nav.NavigateTo("/login?returnUrl=/owner/businesses", true);
+            return;
+        }
+
         try
         {
             businesses = await BusinessApi.GetMyBusinessesAsync();
         }
         catch (Exception ex)
         {
-            await JS.InvokeVoidAsync("alert", $"خطا در دریافت اطلاعات: {ex.Message}");
+            await JS.InvokeVoidAsync("alert", $"\u062e\u0637\u0627: {ex.Message}");
         }
     }
 }

@@ -1,13 +1,22 @@
-﻿@using SetWhen.App.Components.Layout
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-    </Found>
-    <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <SetWhen.App.Components.Pages.Shared.NotFound>
+﻿@inject AuthStateService AuthState
 
-            </SetWhen.App.Components.Pages.Shared.NotFound>
-        </LayoutView>
-    </NotFound>
-</Router>
+<CascadingValue Value="AuthState">
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(Layout.MainLayout)">
+                <SetWhen.App.Components.Pages.Shared.NotFound />
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthState.InitializeAsync();
+    }
+}
+i 

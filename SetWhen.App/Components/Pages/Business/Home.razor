@@ -1,22 +1,22 @@
 ﻿@page "/owner/home"
 @inject IBusinessApi BusinessApi
 @inject IJSRuntime JS
-@inject TokenStorageService TokenStorage
+@inject AuthStateService AuthState
 @inject NavigationManager Nav
 
-<h3>خوش آمدید به پنل صاحب کسب‌و‌کار!</h3>
-
+<h3>خوش آمدید به پنل صاحب کسب‌و‌کار</h3>
 
 <NavLink class="btn btn-success" href="/owner/business/create">
     + ایجاد کسب‌و‌کار
 </NavLink>
-@if (businesses is null)
+
+@if (businesses == null)
 {
-    <p class="text-center">در حال بارگذاری لیست کسب‌و‌کارها...</p>
+    <p class="text-center">در حال بارگذاری...</p>
 }
 else if (!businesses.Any())
 {
-    <p class="text-center text-muted">هنوز کسب‌و‌کاری ثبت نشده است.</p>
+    <p class="text-muted text-center">هنوز کسب‌و‌کاری ثبت نشده است.</p>
 }
 else
 {
@@ -27,6 +27,9 @@ else
                 <h5>@b.Name</h5>
                 <p>📍 @b.City - @b.Address</p>
                 <small class="text-muted">نوع: @b.Type</small>
+                <NavLink class="btn btn-outline-primary btn-sm mt-2" href="@($"/owner/business/{b.Id}/staff")">
+                    مشاهده کارمندان
+                </NavLink>
             </div>
         }
     </div>
@@ -37,11 +40,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(500);
-        var token = await TokenStorage.GetTokenAsync();
-        if (string.IsNullOrWhiteSpace(token))
+        if (!AuthState.IsLoggedIn)
         {
-            Nav.NavigateTo("/login?returnUrl=/owner/home");
+            Nav.NavigateTo("/login?returnUrl=/owner/home", true);
             return;
         }
 
@@ -51,7 +52,7 @@ else
         }
         catch (Exception ex)
         {
-            await JS.InvokeVoidAsync("alert", $"خطا در دریافت کسب‌و‌کارها: {ex.Message}");
+            await JS.InvokeVoidAsync("alert", $"\u062e\u0637\u0627: {ex.Message}");
         }
     }
 }

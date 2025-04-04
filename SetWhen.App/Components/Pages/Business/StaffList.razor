@@ -1,54 +1,57 @@
 ﻿@page "/owner/business/{BusinessId:guid}/staff"
-@inject IBusinessApi BusinessApi 
+@inject IBusinessApi BusinessApi
 @inject IJSRuntime JS
+@inject AuthStateService AuthState
+@inject NavigationManager Nav
 
-<h4 class="text-center my-3">کارکنان کسب‌و‌کار</h4>
+<h4 class="text-center">کارکنان کسب‌و‌کار</h4>
 
-@if (staffs is null)
+@if (staffs == null)
 {
-        <p class="text-center">در حال بارگذاری...</p>
+    <p class="text-center">در حال بارگذاری...</p>
 }
 else if (!staffs.Any())
 {
-        <p class="text-muted text-center">هیچ کارمندی ثبت نشده است.</p>
+    <p class="text-muted text-center">تعداد کارمندان: 0</p>
+    <p class="text-muted text-center">هیچ کارمندی ثبت نشده است.</p>
 }
 else
 {
-        <ul class="list-group">
+    <ul class="list-group">
         @foreach (var s in staffs)
         {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
                 @s.FullName
-                        <span class="badge bg-secondary">@s.PhoneNumber</span>
-                    </li>
+                <span class="badge bg-secondary">@s.PhoneNumber</span>
+            </li>
         }
-        </ul>
+    </ul>
 }
-
 
 <h5 class="mt-4">افزودن کارمند جدید</h5>
 <EditForm Model="staffModel" OnValidSubmit="HandleAddStaff">
     <InputText @bind-Value="staffModel.FullName" class="form-control my-2" placeholder="نام و نام خانوادگی" />
     <InputText @bind-Value="staffModel.Email" class="form-control my-2" placeholder="ایمیل" />
     <InputText @bind-Value="staffModel.PhoneNumber" class="form-control my-2" placeholder="شماره موبایل" />
-
     <button class="btn btn-primary w-100 mt-2">افزودن</button>
 </EditForm>
 
-
 @code {
-    [Parameter]
-    public Guid BusinessId { get; set; }
+    [Parameter] public Guid BusinessId { get; set; }
 
     private List<UserDto>? staffs;
     private AddStaffDto staffModel = new();
 
-
     protected override async Task OnInitializedAsync()
     {
+        if (!AuthState.IsLoggedIn)
+        {
+            Nav.NavigateTo("/login", true);
+            return;
+        }
+
         await LoadStaffs();
     }
-
 
     private async Task LoadStaffs()
     {
@@ -58,7 +61,7 @@ else
         }
         catch (Exception ex)
         {
-            await JS.InvokeVoidAsync("alert", $"خطا: {ex.Message}");
+            await JS.InvokeVoidAsync("alert", $"خطا در اطلاعات کارکنان : {ex.Message}");
         }
     }
 
@@ -66,15 +69,16 @@ else
     {
         try
         {
+            staffModel.BusinessId = BusinessId;
             await BusinessApi.AddStaffAsync(BusinessId, staffModel);
-            staffModel = new(); // reset
-            await LoadStaffs(); // reload list
-            await JS.InvokeVoidAsync("alert", "کارمند جدید اضافه شد ✅");
+            staffModel = new();
+            await LoadStaffs();
+            await JS.InvokeVoidAsync("console.log", $"Staff Count: {staffs?.Count}");
+
         }
         catch (Exception ex)
         {
             await JS.InvokeVoidAsync("alert", $"خطا: {ex.Message}");
         }
     }
-
 }

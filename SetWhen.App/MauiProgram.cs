@@ -24,6 +24,10 @@ namespace SetWhen.App
             builder.Services.AddMudServices();
 
             // Service Registrations
+
+            builder.Services.AddSingleton<AuthStateService>();
+
+
             builder.Services.AddSingleton<TokenStorageService>();
             builder.Services.AddTransient<TokenAuthHandler>();
 
